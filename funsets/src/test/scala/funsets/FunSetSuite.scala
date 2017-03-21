@@ -166,7 +166,7 @@ class FunSetSuite extends FunSuite {
     assert(forall(map(bounded, _ * 2), _ % 2 == 0))
   }
 
-  test("filter odd numbers from integers leaves the even numbers") {
+  test("filter out odd numbers from integers leaves the even numbers") {
     assert(forall(filter(bounded, _ % 2 == 0), _ % 2 == 0))
     assert(!exists(filter(bounded, _ % 2 == 0), _ % 2 != 0))
   }

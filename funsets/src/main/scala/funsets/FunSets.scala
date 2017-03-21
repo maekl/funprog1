@@ -68,8 +68,11 @@ object FunSets {
     iter(-bound)
   }
 
-  final val unbounded: Set = x => x > bound || x < -bound
-  final val bounded: Set = x => x >= -bound && x <= bound
+  final val unbounded: Set =
+    x => x > bound || x < -bound
+
+  final val bounded: Set =
+    x => x >= -bound && x <= bound
 
   /**
     * Returns whether there exists a bounded integer within `s`
