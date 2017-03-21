@@ -1,5 +1,7 @@
 package funsets
 
+import scala.annotation.tailrec
+
 
 /**
   * 2. Purely Functional Sets.
@@ -19,31 +21,35 @@ object FunSets {
   /**
     * Returns the set of the one given element.
     */
-  def singletonSet(elem: Int): Set = ???
-
+  def singletonSet(elem: Int): Set =
+    _ == elem
 
   /**
     * Returns the union of the two given sets,
     * the sets of all elements that are in either `s` or `t`.
     */
-  def union(s: Set, t: Set): Set = ???
+  def union(s: Set, t: Set): Set =
+    elem => contains(s, elem) || contains(t, elem)
 
   /**
     * Returns the intersection of the two given sets,
     * the set of all elements that are both in `s` and `t`.
     */
-  def intersect(s: Set, t: Set): Set = ???
+  def intersect(s: Set, t: Set): Set =
+    elem => contains(s, elem) && contains(t, elem)
 
   /**
     * Returns the difference of the two given sets,
     * the set of all elements of `s` that are not in `t`.
     */
-  def diff(s: Set, t: Set): Set = ???
+  def diff(s: Set, t: Set): Set =
+    elem => contains(s, elem) && !contains(t, elem)
 
   /**
     * Returns the subset of `s` for which `p` holds.
     */
-  def filter(s: Set, p: Int => Boolean): Set = ???
+  def filter(s: Set, p: Int => Boolean): Set =
+    intersect(s, p)
 
 
   /**
@@ -55,24 +61,29 @@ object FunSets {
     * Returns whether all bounded integers within `s` satisfy `p`.
     */
   def forall(s: Set, p: Int => Boolean): Boolean = {
+    @tailrec
     def iter(a: Int): Boolean = {
-      if (???) ???
-      else if (???) ???
-      else iter(???)
+      unbounded(a) || (!s(a) || p(a)) && iter(a + 1)
     }
-    iter(???)
+
+    iter(-bound)
   }
+
+  final val unbounded: Set = x => x > bound || x < -bound
+  final val bounded: Set = x => x >= -bound && x <= bound
 
   /**
     * Returns whether there exists a bounded integer within `s`
     * that satisfies `p`.
     */
-  def exists(s: Set, p: Int => Boolean): Boolean = ???
+  def exists(s: Set, p: Int => Boolean): Boolean =
+    !forall(s, !p(_))
 
   /**
     * Returns a set transformed by applying `f` to each element of `s`.
     */
-  def map(s: Set, f: Int => Int): Set = ???
+  def map(s: Set, f: Int => Int): Set =
+    b => exists(s, a => f(a) == b)
 
   /**
     * Displays the contents of a set
