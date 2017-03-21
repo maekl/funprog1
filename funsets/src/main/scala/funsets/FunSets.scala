@@ -62,9 +62,8 @@ object FunSets {
     */
   def forall(s: Set, p: Int => Boolean): Boolean = {
     @tailrec
-    def iter(a: Int): Boolean = {
+    def iter(a: Int): Boolean =
       unbounded(a) || (!s(a) || p(a)) && iter(a + 1)
-    }
 
     iter(-bound)
   }
